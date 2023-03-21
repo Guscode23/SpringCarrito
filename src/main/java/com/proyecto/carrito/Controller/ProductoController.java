@@ -1,6 +1,8 @@
 package com.proyecto.carrito.Controller;
 
 
+import java.io.IOException;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,10 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.proyecto.carrito.model.Cliente;
 import com.proyecto.carrito.model.Producto;
 import com.proyecto.carrito.service.ProductoService;
+import com.proyecto.carrito.service.UploadFileService;
 
 import org.springframework.ui.Model;
 
@@ -23,6 +28,9 @@ public class ProductoController {
 	
 	@Autowired
 	private ProductoService productoService;
+	
+	@Autowired
+	private UploadFileService upload;
 	
 	
 	@GetMapping("")
@@ -38,10 +46,27 @@ public class ProductoController {
 	
 	
 	@PostMapping("/save")
-	public String save(Producto producto) {
+	public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
 		LOGGER.info("Este es el objeto producto{}",producto);
 		Cliente cli=new Cliente(1,"","","","","","");
 		producto.setCliente(cli);
+		
+		//Subir imagen//
+		if(producto.getId()==null) //Cuando se crea un producto
+		{
+			String nombreImagen=upload.saveImages(file);
+			producto.setImagen(nombreImagen);
+		}else {
+			if(file.isEmpty()) //Edito el producto pero no cambio la imagen//
+			{
+				Producto p= new Producto();
+				p=productoService.get(producto.getId()).get();
+				producto.setImagen(p.getImagen());
+			}else {
+				String nombreImagen=upload.saveImages(file);
+				producto.setImagen(nombreImagen);
+			}
+		}
 		
 		productoService.save(producto);
 		return "redirect:/Productos";
