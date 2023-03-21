@@ -12,6 +12,8 @@ import com.proyecto.carrito.model.Cliente;
 import com.proyecto.carrito.model.Producto;
 import com.proyecto.carrito.service.ProductoService;
 
+import org.springframework.ui.Model;
+
 @Controller
 @RequestMapping("/Productos")
 public class ProductoController {
@@ -23,7 +25,8 @@ public class ProductoController {
 	
 	
 	@GetMapping("")
-	public String show() {
+	public String show(Model model) {
+		 model.addAttribute("Productos", productoService.findAll());
 		return "Productos/show";
 	}
 	
