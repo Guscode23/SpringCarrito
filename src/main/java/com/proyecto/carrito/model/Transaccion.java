@@ -2,7 +2,20 @@ package com.proyecto.carrito.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="transacciones")
+
 public class Transaccion {
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
      private Integer id;
      private String numero;
      private Date fechaCreacion;
@@ -11,15 +24,33 @@ public class Transaccion {
      
      private double total;
      
+     @ManyToOne
+     private Cliente cliente;
+     
+     @OneToOne(mappedBy="transaccion")
+     private DetalleOrden detalle;
      
      //Constructor//
      
      public Transaccion() {
-    	 
-    	 
-     }
+       }
+     
+     public Transaccion(Integer id, String numero, Date fechaCreacion, Date fechaRecibida, String mediopago,
+			double total) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.fechaCreacion = fechaCreacion;
+		this.fechaRecibida = fechaRecibida;
+		Mediopago = mediopago;
+		this.total = total;
+	}
 
-     //Getters and Setters//
+
+
+
+
+	//Getters and Setters//
      
      public Integer getId() {
 		return id;
@@ -79,11 +110,18 @@ public class Transaccion {
 		Mediopago = mediopago;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-	
-	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+     
 	//Metodo para mostrar por consola//
      
+	
 	@Override
 	public String toString() {
 		return "Transaccion [id=" + id + ", numero=" + numero + ", fechaCreacion=" + fechaCreacion + ", fechaRecibida="
