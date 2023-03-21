@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -47,6 +48,23 @@ public class ProductoController {
 	}
 	
 	
+	@GetMapping("/edit/{id}")
+	public String edit(@PathVariable String id,Model model) {
+		Integer idProducto = Integer.parseInt(id);
+		Producto producto=new Producto();
+		java.util.Optional<Producto> optionalProducto=productoService.get(idProducto);
+		producto=optionalProducto.get();
+		
+		LOGGER.info("Producto Buscado:{}",producto);
+		model.addAttribute("producto",producto);
+		return "Productos/edit";
+	}
+	
+	@PostMapping("/update")
+	public String update(Producto producto) {
+		productoService.update(producto);
+		return "redirect:/Productos";
+	}
 	
 }
 
