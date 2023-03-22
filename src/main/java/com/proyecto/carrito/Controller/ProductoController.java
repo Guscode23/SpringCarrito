@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.proyecto.carrito.model.Cliente;
 import com.proyecto.carrito.model.Producto;
 import com.proyecto.carrito.service.ProductoService;
-import com.proyecto.carrito.service.UploadFileService;
 
 import org.springframework.ui.Model;
 
@@ -29,8 +28,7 @@ public class ProductoController {
 	@Autowired
 	private ProductoService productoService;
 	
-	@Autowired
-	private UploadFileService upload;
+
 	
 	
 	@GetMapping("")
@@ -50,14 +48,6 @@ public class ProductoController {
 		LOGGER.info("Este es el objeto producto{}",producto);
 		Cliente cli=new Cliente(1,"","","","","","");
 		producto.setCliente(cli);
-		
-		//Subir imagen//
-		if(producto.getId()==null) //Cuando se crea un producto
-		{
-			String nombreImagen=upload.saveImages(file);
-			producto.setImagen(nombreImagen);
-		}else {
-					}
 		
 		productoService.save(producto);
 		return "redirect:/Productos";
@@ -82,21 +72,7 @@ public class ProductoController {
 		Producto p= new Producto();
 		p=productoService.get(producto.getId()).get();
 		
-		if(file.isEmpty()) //Edito el producto pero no cambio la imagen//
-		{
-			
-			producto.setImagen(p.getImagen());
-		}else {
-			
-			//Eliminar cuando no sea la imagen por defecto//
-			if(p.getImagen().equals("default.jpg")) {
-				upload.deleteImage(p.getImagen());
-				
-			}
-			
-			String nombreImagen=upload.saveImages(file);
-			producto.setImagen(nombreImagen);
-		}
+		
 
 		producto.setCliente(p.getCliente());
 	    productoService.update(producto);

@@ -1,5 +1,6 @@
 package com.proyecto.carrito.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,24 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	public Optional<Cliente> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return usuarioRespository.findById(id);
+	}
+
+	@Override
+	public List<Cliente> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Cliente save(Cliente usuario) {
+		// TODO Auto-generated method stub
+		return usuarioRespository.save(usuario);
+	}
+
+	@Override
+	public Optional<Cliente> findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 	
 	

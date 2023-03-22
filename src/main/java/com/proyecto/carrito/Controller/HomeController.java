@@ -34,7 +34,6 @@ public class HomeController {
 	@Autowired
 	private IUsuarioService usuarioService;
 	
-	
 	List<DetalleOrden> detalles=new ArrayList<DetalleOrden>();
 	
 	//Datos de la Transaccion/
@@ -153,6 +152,8 @@ public class HomeController {
 		return "Cliente/resumenorden";
 	}
 	
+	
+		
 }
 	
 	
