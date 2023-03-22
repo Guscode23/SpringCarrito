@@ -3,7 +3,6 @@ package com.proyecto.carrito.Controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,18 +56,32 @@ public class HomeController {
 	}
 	
 	@PostMapping("/cart")
-	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad) {
+	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad,Model model) {
 		DetalleOrden detalleorden=new DetalleOrden();
 		Producto producto=new Producto();
-		double sumaTotal=0;
+		double  sumaTotal=0;
 		
 		Optional<Producto> optionalProducto= productoService.get(id);
 		log.info("Producto añadido:{}",optionalProducto.get());
 		log.info("Cantidad:{}",cantidad);
+		producto=optionalProducto.get();
+		
+		detalleorden.setCantidad(cantidad);
+		detalleorden.setPrecio(producto.getPrecio());
+		detalleorden.setNombre(producto.getNombre());
+		detalleorden.setTotal(producto.getPrecio()*cantidad);
+		detalleorden.setProducto(producto);
+		
+		detalles.add(detalleorden);
+		
+		sumaTotal=detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
+		
+		transac.setTotal(sumaTotal);
+		model.addAttribute("cart",detalles);
+		model.addAttribute("transac",transac);
+		
 		
 		return "Cliente/carrito";
-		
-		
 	}
 	
 	
