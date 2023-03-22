@@ -7,7 +7,7 @@ import com.proyecto.carrito.model.Producto;
 
 
 @Repository
-public interface ProductoRepository extends JpaRepository<Producto,Integer> {
+public interface IProductoRepository extends JpaRepository<Producto,Integer> {
 
 	
 	

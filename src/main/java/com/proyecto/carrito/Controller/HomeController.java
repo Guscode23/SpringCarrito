@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.proyecto.carrito.model.Cliente;
 import com.proyecto.carrito.model.DetalleOrden;
 import com.proyecto.carrito.model.Producto;
 import com.proyecto.carrito.model.Transaccion;
+import com.proyecto.carrito.service.IUsuarioService;
 import com.proyecto.carrito.service.ProductoService;
 
 @Controller
@@ -28,6 +30,9 @@ public class HomeController {
 	
 	@Autowired
 	private ProductoService productoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 	
 	
 	List<DetalleOrden> detalles=new ArrayList<DetalleOrden>();
@@ -134,7 +139,19 @@ public class HomeController {
 		return "/Cliente/carrito";
 	}
 	
-	
+	@GetMapping("/order")
+	public String order(Model model) {
+		
+		
+	    Cliente usuario=usuarioService.findById(1).get();
+	    
+		
+		model.addAttribute("cart",detalles);
+		model.addAttribute("transac",transac);
+		model.addAttribute("usuario",usuario);
+		
+		return "Cliente/resumenorden";
+	}
 	
 }
 	
