@@ -1,13 +1,14 @@
 package com.proyecto.carrito.model;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,8 +28,8 @@ public class Transaccion {
      @ManyToOne
      private Cliente cliente;
      
-     @OneToOne(mappedBy="transaccion")
-     private DetalleOrden detalle;
+     @OneToMany(mappedBy="transaccion")
+     private List<DetalleOrden>detalle;
      
      //Constructor//
      
@@ -118,10 +119,20 @@ public class Transaccion {
 		this.cliente = cliente;
 	}
 
+	
+	
      
 	//Metodo para mostrar por consola//
      
 	
+	public List<DetalleOrden> getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(List<DetalleOrden> detalle) {
+		this.detalle = detalle;
+	}
+
 	@Override
 	public String toString() {
 		return "Transaccion [id=" + id + ", numero=" + numero + ", fechaCreacion=" + fechaCreacion + ", fechaRecibida="

@@ -18,7 +18,8 @@ import com.proyecto.carrito.model.Cliente;
 import com.proyecto.carrito.model.DetalleOrden;
 import com.proyecto.carrito.model.Producto;
 import com.proyecto.carrito.model.Transaccion;
-import com.proyecto.carrito.service.IUsuarioService;
+import com.proyecto.carrito.service.IUsuarioInterface;
+//import com.proyecto.carrito.service.IUsuarioService;
 import com.proyecto.carrito.service.ProductoService;
 
 @Controller
@@ -32,7 +33,7 @@ public class HomeController {
 	private ProductoService productoService;
 	
 	@Autowired
-	private IUsuarioService usuarioService;
+	private IUsuarioInterface usuarioService;
 	
 	List<DetalleOrden> detalles=new ArrayList<DetalleOrden>();
 	
